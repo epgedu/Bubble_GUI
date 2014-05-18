@@ -1,0 +1,123 @@
+@CHARSET "ISO-8859-1";
+
+/*menu style*/
+
+#menu_div {
+	top: 0px;
+	left: 0px;
+	width:80%;
+	height: 100%;
+	text-align: center;
+	background-image: url(../img/small/menuimg.png);
+	background-repeat: no-repeat;
+	background-position:55% 0%; 
+	
+}
+
+.accordion,.accordion div,.accordion h1,.accordion p,.accordion a,.accordion img,.accordion span,.accordion em,.accordion ul,.accordion li {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.accordion {
+    width: 100%;
+    padding: 1px 5px 5px 5px;
+    background: #C7B3C6;
+ 
+    -webkit-box-shadow: 0px 1px 0px rgba(255,255,255, .05);
+    -moz-box-shadow: 0px 1px 0px rgba(255,255,255, .05);
+    -o-box-shadow: 0px 1px 0px rgba(255,255,255, .05);
+    -ms-box-shadow: 0px 1px 0px rgba(255,255,255, .05);
+    box-shadow: 0px 1px 0px rgba(255,255,255, .05);
+ 
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+    
+    margin-top: 60%;
+    
+}
+
+
+.accordion .tab {
+    display: block;
+    height: 35px;
+    margin-top: 4px;
+    padding-left: 20px;
+    font: bold 12px/35px Arial, sans-serif;
+    text-decoration: none;
+    color: #eee;
+ 
+    text-shadow: 1px 1px 0px rgba(0,0,0, .2);
+ 
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+ 
+    background: #C2A5D9;
+    background: -moz-linear-gradient(top,  #6c6e74 0%, #C2A5D9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6c6e74), color-stop(100%,#C2A5D9));
+    background: -webkit-linear-gradient(top,  #6c6e74 0%,#C2A5D9 100%);
+    background: -o-linear-gradient(top,  #6c6e74 0%,#C2A5D9 100%);
+    background: -ms-linear-gradient(top,  #6c6e74 0%,#C2A5D9 100%);
+    background: linear-gradient(top,  #6c6e74 0%,#C2A5D9 100%);
+ 
+    -webkit-box-shadow: 0px 1px 0px rgba(0,0,0, .1), inset 0px 1px 0px rgba(255,255,255, .1);
+    -moz-box-shadow: 0px 1px 0px rgba(0,0,0, .1), inset 0px 1px 0px rgba(255,255,255, .1);
+    -o-box-shadow: 0px 1px 0px rgba(0,0,0, .1), inset 0px 1px 0px rgba(255,255,255, .1);
+    -ms-box-shadow: 0px 1px 0px rgba(0,0,0, .1), inset 0px 1px 0px rgba(255,255,255, .1);
+    box-shadow: 0px 1px 0px rgba(0,0,0, .1), inset 0px 1px 0px rgba(255,255,255, .1);
+}
+
+.accordion .tab:hover,
+.accordion div:target .tab {
+    color: #a5cd4e;
+ 
+    text-shadow: 0px 1px 0px rgba(255,255,255, .15);
+ 
+    background: #a5cd4e;
+    background: -moz-linear-gradient(top,  #a5cd4e 0%, #6b8f1a 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a5cd4e), color-stop(100%,#6b8f1a));
+    background: -webkit-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: -o-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: -ms-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+ 
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0, .3), inset 1px 1px 1px rgba(255,255,255, .45);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0, .3), inset 1px 1px 1px rgba(255,255,255, .45);
+    -o-box-shadow: 1px 1px 1px rgba(0,0,0, .3), inset 1px 1px 1px rgba(255,255,255, .45);
+    -ms-box-shadow: 1px 1px 1px rgba(0,0,0, .3), inset 1px 1px 1px rgba(255,255,255, .45);
+    box-shadow: 1px 1px 1px rgba(0,0,0, .3), inset 1px 1px 1px rgba(255,255,255, .45);
+}
+
+.accordion div .content {
+    display: none;
+    margin: 5px 0;
+    font: 8px/35px Arial, sans-serif;
+}
+ 
+.accordion div:target .content {
+    display: block;
+    
+}
+ 
+.accordion > div {
+    height: 40px;
+    overflow: hidden;
+ 
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+ 
+.accordion > div:target {
+    height: 170px;
+}
+
