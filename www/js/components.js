@@ -183,10 +183,7 @@ function buildListDocBubble() {
 			}, false);
 		}
 		
-		//refresh datas on list doc bubble
-		console.log("refresing datas on list documents bubble...");
-		listDocsBubble.innerHTML = "Results...";
-	
+		
 		//it creates the bubbles with datas
 		var tittle;
 		var snippet;
@@ -197,79 +194,60 @@ function buildListDocBubble() {
 		var endUrl;
 		var calls = [];
 		var elements = [];
-		for (i=0; i<formalConcept.extension.length; i++) {
-			var listLink = document.createElement('li');
-			listLink.className = 'li_list_doc';
-			
-			/*split the title, snippet and url*/
-			/*the format when we have built the content was: vaule_title snippetObjectBubble:value_snippet || urlObjectBubble: vaule_url*/
-			initSnippet = (formalConcept.extension[i].value).indexOf(TAG_SNIPPET);
-			initUrl = (formalConcept.extension[i].value).indexOf(TAG_URL); 
-			tittle = (formalConcept.extension[i].value).substring(0, initSnippet -1);
-			snippet = (formalConcept.extension[i].value).substring(initSnippet + TAG_SNIPPET.length, initUrl);
-			
-			auxUrl = (formalConcept.extension[i].value).substring(initUrl + TAG_URL.length, (formalConcept.extension[i].value).length);
-			endUrl = auxUrl.indexOf(" ");
-			if(endUrl == -1) {
-				//then there is not space after the url
-				url = auxUrl;
-			}
-			else {
-				url = auxUrl.substring(initUrl, endUrl);
+		
+		//refresh datas on list doc bubble
+		console.log("refresing datas on list documents bubble...");
+		
+		if(formalConcept != undefined) {
+			listDocsBubble.innerHTML = "Results... "+formalConcept.extension.length+" of "+totalResults;
+			for (i=0; i<formalConcept.extension.length; i++) {
+				var listLink = document.createElement('li');
+				listLink.className = 'li_list_doc';
 				
-			}
-			console.log(formalConcept.extension[i].value);
-			console.log(tittle);
-			console.log(url);
-			
-			listLink.style.marginLeft = '5%';
-			listLink.style.marginRight = '5%';
-			listLink.innerHTML = "<b>"+tittle+"</b><br>";
-			listLink.innerHTML += "<i>"+snippet+"</i><br>";
-			listLink.innerHTML += "<a href='#'>"+url+"</a>";
-			elements[i] = listLink;
-			
-			//define one function for each li object
-			calls[i] = function(evt) {
+				/*split the title, snippet and url*/
+				/*the format when we have built the content was: vaule_title snippetObjectBubble:value_snippet || urlObjectBubble: vaule_url*/
+				initSnippet = (formalConcept.extension[i].value).indexOf(TAG_SNIPPET);
+				initUrl = (formalConcept.extension[i].value).indexOf(TAG_URL); 
+				tittle = (formalConcept.extension[i].value).substring(0, initSnippet -1);
+				snippet = (formalConcept.extension[i].value).substring(initSnippet + TAG_SNIPPET.length, initUrl);
 				
-				var ref = window.open('http://apache.org', '_blank', 'location=yes');
-				ref.addEventListener('loadstart', function(event) { console.log(event.url); });
-			
-				if(auxX == evt.changedTouches[0].pageX) { //if not moving
-					//window.open(evt.currentTarget.id, '_system', 'location=yes,toolbar=yes,EnableViewportScale=no');
+				auxUrl = (formalConcept.extension[i].value).substring(initUrl + TAG_URL.length, (formalConcept.extension[i].value).length);
+				endUrl = auxUrl.indexOf(" ");
+				if(endUrl == -1) {
+					//then there is not space after the url
+					url = auxUrl;
 				}
-			};
-			
-			elements[i].addEventListener('touchstart', function(event) {
-				auxX = event.targetTouches[0].pageX;
-	    	}, false);
-			//pass the url in order to know it when the event is thrown
-			elements[i].id = url;
-			elements[i].addEventListener('touchend', calls[i], false);
-			listDocsBubble.appendChild(elements[i]);
-		}
-		
-		
-		
-		/*
-		//build the event to click the link and to open the inappbrowser plugin
-		for (j=0; j<formalConcept.extension.length; j++) {	
-			//define one function for each li object
-			calls[j] = function(evt) { 
-				if(auxX == evt.changedTouches[0].pageX) { //if not moving
-					window.open("'"+evt.currentTarget.id+"'", '_blank', 'location=yes'); 
+				else {
+					url = auxUrl.substring(initUrl, endUrl);
+					
 				}
-			};
-			
-			elements[j].addEventListener('touchstart', function(event) {
-				auxX = event.targetTouches[0].pageX;
-	    	}, false);
-			//pass the url in order to know it when the event is thrown
-			elements[j].id = i;
-			elements[j].addEventListener('touchend', calls[j], false);
-			listDocsBubble.appendChild(elements[j]);
-		}
-		*/
+				console.log(formalConcept.extension[i].value);
+				console.log(tittle);
+				console.log(url);
+				
+				listLink.style.marginLeft = '5%';
+				listLink.style.marginRight = '5%';
+				listLink.innerHTML = "<b>"+tittle+"</b><br>";
+				listLink.innerHTML += "<i>"+snippet+"</i><br>";
+				listLink.innerHTML += "<a href='#'>"+url+"</a>";
+				elements[i] = listLink;
+				
+				//define one function for each li object
+				calls[i] = function(evt) {
+					if(auxX == evt.changedTouches[0].pageX) { //if not moving
+						window.open(evt.currentTarget.id, '_system', 'location=yes,toolbar=yes,EnableViewportScale=no');
+					}
+				};
+				
+				elements[i].addEventListener('touchstart', function(event) {
+					auxX = event.targetTouches[0].pageX;
+				}, false);
+				//pass the url in order to know it when the event is thrown
+				elements[i].id = url;
+				elements[i].addEventListener('touchend', calls[i], false);
+				listDocsBubble.appendChild(elements[i]);
+			}
+		}	
 	}
 	catch(e) {
 		app.error(e, "Fatal error building list docs bubble... Please contanct the site administrator.");

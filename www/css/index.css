@@ -16,100 +16,389 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
-}
+* 
+
+/*
+	This file contains the main app style and animations.
+	Note: Text size depend on its owner bubble. It's not depend on size screen
+*/
 
 body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
+    font-size:14px;
+    letter-spacing:0.6px;
+    line-height:20px;
+    color: black;
     height:100%;
-    margin:0px;
-    padding:0px;
-    text-transform:uppercase;
     width:100%;
+    padding:0;
+    margin:0;
+    border:0;
+    position: fixed;
+    overflow: hidden; /* this is important to prevent the whole page to bounce */
 }
 
-/* Portrait layout (default) */
-.app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
-    text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
+
+
+/***************************STYLE TO PAGES*****************************/
+
+/*Position general page*/
+.page { 
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	width: 100%; 
+	height: 100%; 
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0); 
+	transform: translate3d(0, 0, 0); 
 }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
+/*Position central page*/
+.page.center { 
+	-webkit-transform: translate3d(0, 0, 0); /* Safari and Chrome */
+	-moz-transform: translate3d(0, 0, 0); /* Firefox */
+	-o-transform: translate3d(0, 0, 0);   /* Opera */
+	-ms-transform: translate3d(0, 0, 0); /* IE 9 */
+	transform: translate3d(0, 0, 0);
+} 
+ 
+ /*Position right page*/
+.page.right { 
+	-webkit-transform: translate3d(80%, 0, 0); /* Safari and Chrome */
+	-moz-transform: translate3d(80%, 0, 0); /* Firefox */
+	-o-transform: translate3d(80%, 0, 0);   /* Opera */
+	-ms-transform: translate3d(80%, 0, 0); /* IE 9 */
+	transform: translate3d(80%, 0, 0);
+}
+
+ /*Position up page*/
+.page.up { 
+	-webkit-transform: translate3d(0, -150%, 0); /* Safari and Chrome */
+	-moz-transform: translate3d(0, -150%, 0); /* Firefox */
+	-o-transform: translate3d(0, -150%, 0);   /* Opera */
+	-ms-transform: translate3d(0, -150%, 0); /* IE 9 */
+	transform: translate3d(0, -150%, 0);
+}
+
+/*Position down page*/
+.page.down { 
+	-webkit-transform: translate3d(0, 150%, 0); /* Safari and Chrome */
+	-moz-transform: translate3d(0, 150%, 0); /* Firefox */
+	-o-transform: translate3d(0, 150%, 0);   /* Opera */
+	-ms-transform: translate3d(0, 150%, 0); /* IE 9 */
+	transform: translate3d(0, 150%, 0);
+}
+
+/*Page transition animation*/
+.page.transition { 
+	-webkit-transition-duration: 0.5s;
+	-moz-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s; 
+	-ms-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+}
+
+
+/***************************STYLE TO MAIN DIV's*****************************/
+
+/*Style to results brief on app div*/
+#app_div {
+	position:absolute;
+    width: 100%;
+    height:100%;
+	
+	/* gradient background efect (http://www.css3.me) */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a3f5ff', endColorstr = '#967557');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a3f5ff', endColorstr = '#967557')";
+	-webkit-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a3f5ff', endColorstr = '#967557');
+	-o-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a3f5ff', endColorstr = '#967557');
+	-moz-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a3f5ff', endColorstr = '#967557');
+	
+	background-image: -moz-linear-gradient(top, #a3f5ff, #967557);
+	background-image: -ms-linear-gradient(top, #a3f5ff, #967557);
+	background-image: -o-linear-gradient(top, #a3f5ff, #967557);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#a3f5ff), to(#967557));
+	background-image: -webkit-linear-gradient(top, #a3f5ff, #967557);
+	background-image: linear-gradient(top, #a3f5ff, #967557);
+	/*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
+}
+
+/*Style to search bar */
+#searchbar_div {
+	display:block;
+	top: 0px;
+	left: 0px;
+	width:100%;
+	height: 10%;
+	text-align: center;
+}
+
+#results_div { /*wrapper div*/
+	top: 0px;
+	left: 0px;
+	width:100%;
+	height: 85%;
+}
+
+ /*Position right medium bubble*/
+.results.right {
+	-moz-transform: scale(-0.5) rotate(0deg) translate3d(400%, 0, 0); 
+	-webkit-transform: scale(-0.5) rotate(0deg) translate3d(400%, 0, 0); 
+	-o-transform: scale(-0.5) rotate(0deg) translate3d(400%, 0, 0); 
+	-ms-transform: scale(-0.5) rotate(0deg) translate3d(400%, 0, 0); 
+	transform: scale(-0.5) rotate(0deg) translate3d(400%, 0, 0); 
+}
+
+/*Position center medium bubble*/
+.results.center { 
+	-moz-transform: scale(1) rotate(360deg) translate3d(0, 0, 0); 
+	-webkit-transform: scale(1) rotate(360deg) translate3d(0, 0, 0); 
+	-o-transform: scale(1) rotate(360deg) translate3d(0, 0, 0); 
+	-ms-transform: scale(1) rotate(360deg) translate3d(0, 0, 0); 
+	transform: scale(1) rotate(360deg) translate3d(0, 0, 0); 
+}
+
+/*Page transition animation*/
+.results.transition { 
+	-webkit-transition-duration: 0.5s;
+	-moz-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s; 
+	-ms-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+}
+
+
+/***************************STYLE ERROR SCREEN*****************************/
+
+/*default style searchbtn when the screen at least 426 × 320  ldpi*/
+.error{
+	position: absolute;
+	width: 100%; height: 100%;
+	background-image: url(../img/small/errorimg.png);
+	background-repeat: no-repeat;
+	background-attachment:fixed;
+	background-position:45% 5%;
+	
+	font-size:10px;
+    text-align: center; 
+}
+
+
+
+/***************************STYLE INTO SEARCH BAR*****************************/
+#searchtxt {
+	border: 3px solid #c7c7c7;
+	border-radius: 100px;
+	-moz-border-radius: 10dsf0px;
+	-webkit-border-radius: 100px;
+	-o-border-radius: 100px;
+	-ms-border-radius: 100px;
+	
+	outline: none;
+	background-color: #8abaee;
+	width: 75%;
+	height: 80%;
+}
+
+
+/*default style searchbtn when the screen at least 426 × 320  ldpi*/ 
+#searchbtn{
+	width: 40px; height: 40px;
+	border-radius: 100px;
+	-moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+	-o-border-radius: 100px;
+	-ms-border-radius: 100px;
+	
+	background-image: url(../img/small/searchimg.png);
+	background-repeat: no-repeat;
+}
+
+/*default style links bar when the screen at least 426 × 320  ldpi*/ 
+#linksbar_div {
+	display: block;
+	left: 0px;
+	width: 100%;
+	top: 82%;
+}
+
+
+//TODO: buscar si se sobreescriben con media
+/* Setting styles to different size screens*/
+
+/* Landscape layout at least 470 × 320 mdpi*/
+@media screen and (min-width:470px) and (min-height:320px) {
+    #searchbtn {
+        width: 50px; height: 50px; 
+		border-radius: 100px;
+		-moz-border-radius: 100px;
+		-webkit-border-radius: 100px;
+		-o-border-radius: 100px;
+		-ms-border-radius: 100px;
+		
+		background-image: url(../img/medium/searchimg.png);
+		background-repeat: no-repeat;
     }
+    
+    .error {
+		background-image: url(../img/medium/errorimg.png);
+	}
+	
+	#linksbar_div {
+		top: 90%;
+	}
+	
 }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
+/* Landscape layout at least 640 × 480 hdpi*/
+@media screen and (min-width:640px) and (min-height:840px) {
+    #searchbtn {
+        width: 60px; height: 60px; 
+		border-radius: 100px;
+		-moz-border-radius: 10dsf0px;
+		-webkit-border-radius: 100px;
+		-o-border-radius: 100px;
+		-ms-border-radius: 100px;
+		
+		background-image: url(../img/large/searchimg.png);
+		background-repeat: no-repeat;
+    }
+    
+    .error {
+		background-image: url(../img/large/errorimg.png);
+	}
+	
+	#linksbar_div {
+		top: 95%;
+	}
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+/* Landscape layout at least 960 × 720 xhdpi*/
+@media screen and (min-width:960px) and (min-height:720) {
+    #searchbtn {
+        width: 90px; height: 90px;  
+		border-radius: 100px;
+		-moz-border-radius: 10dsf0px;
+		-webkit-border-radius: 100px;
+		-o-border-radius: 100px;
+		-ms-border-radius: 100px;
+		
+		background-image: url(../img/xlarge/searchimg.png);
+		background-repeat: no-repeat;
+    }
+    
+    .error {
+		background-image: url(../img/xlarge/errorimg.png);
+	}
+	
+	#linksbar_div {
+		top: 95%;
+	}
 }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
+
+/* Wobble Skew init  animation*/
+@-webkit-keyframes wobble-skew-init {
+  16.65% {
+    -webkit-transform: skew(-24deg);
+    -o-transform: skew(-24deg);
+    -ms-transform: skew(-24deg);
+    -moz-transform: skew(-24deg);
+    transform: skew(-24deg);
+    
+  }
+
+  33.3% {
+    -webkit-transform: skew(20deg);
+    -o-transform: skew(20deg);
+    -ms-transform: skew(20deg);
+    -moz-transform: skew(20deg);
+    transform: skew(20deg);
+  }
+
+  49.95% {
+    -webkit-transform: skew(-24deg);
+    -o-transform: skew(-24deg);
+    -ms-transform: skew(-24deg);
+    -moz-transform: skew(-24deg);
+    transform: skew(-24deg);
+  }
+
+  66.6% {
+    -webkit-transform: skew(20deg);
+    -o-transform: skew(20deg);
+    -ms-transform: skew(20deg);
+    -moz-transform: skew(20deg);
+    transform: skew(20deg);
+  }
+
+  83.25% {
+    -webkit-transform: skew(-20deg);
+    -o-transform: skew(-20deg);
+    -ms-transform: skew(-20deg);
+    -moz-transform: skew(-20deg);
+    transform: skew(-20deg);
+  }
+
+  100.0% {
+    -webkit-transform: skew(0);
+    -o-transform: skew(0);
+    -ms-transform: skew(0);
+    -moz-transform: skew(0);
+    transform: skew(0);
+  }
 }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
+@keyframes wobble-skew-init {
+  16.65% {
+    -webkit-transform: skew(-24deg);
+    -ms-transform: skew(-24deg);
+    -o-transform: skew(-24deg);
+    -moz-transform: skew(-24deg);
+    transform: skew(-24deg);
+  }
+
+  33.3% {
+    -webkit-transform: skew(20deg);
+    -ms-transform: skew(20deg);
+    -o-transform: skew(20deg);
+    -moz-transform: skew(20deg);
+    transform: skew(20deg);
+  }
+
+  49.95% {
+    -webkit-transform: skew(-12deg);
+    -ms-transform: skew(-12deg);
+    -o-transform: skew(-12deg);
+    -moz-transform: skew(-12deg);
+    transform: skew(-12deg);
+  }
+
+  66.6% {
+    -webkit-transform: skew(8deg);
+    -ms-transform: skew(8deg);
+    -o-transform: skew(8deg);
+    -moz-transform: skew(8deg);
+    transform: skew(8deg);
+  }
+
+  83.25% {
+    -webkit-transform: skew(-4deg);
+    -ms-transform: skew(-4deg);
+    -o-transform: skew(-4deg);
+    -moz-transform: skew(-4deg);
+    transform: skew(-4deg);
+  }
+
+  100.0% {
+    -webkit-transform: skew(0);
+    -ms-transform: skew(0);
+    -o-transform: skew(0);
+    -moz-transform: skew(0);
+    transform: skew(0);
+  }
 }
 
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
- 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
-}
