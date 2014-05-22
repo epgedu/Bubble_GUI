@@ -93,8 +93,8 @@ function handleStateChange() {
 	    	
 	    	if(req.responseText == "") {
 	    	
-	    		console.log("Error, response empty");
-				app.Error(null, "Error, response empty...");
+	    		console.log("Info, No results");
+				app.infoMsgExit(null, "Sorry, no results...");
 				
 	    	}
 	    	else {

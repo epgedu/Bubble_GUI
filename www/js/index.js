@@ -274,7 +274,7 @@ var app = {
 	
 	//show a info message and init
     infoMsgExit: function (e, msg) {
-    	navigator.notification.alert(msg, null, "Info");
+    	navigator.notification.alert(msg, function() {navigator.app.exitApp();}, "Info");
     	if(e != null) { msg = msg + "Exception: "+e;}
     	console.log(msg);
     }
