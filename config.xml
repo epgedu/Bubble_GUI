@@ -59,7 +59,7 @@
 	<gap:plugin name="org.apache.cordova.vibration" version="0.3.7" />
 
     <!-- Define app icon for each platform. -->
-	<icon src="iconss.png" />
+	<icon src="icon.png" />
     <icon src="res/icon/android/ic_bubble.png"   gap:platform="android"    gap:density="ldpi" />
     <icon src="res/icon/android/ic_bubble.png"   gap:platform="android"    gap:density="mdpi" />
     <icon src="res/icon/android/ic_bubble.png"   gap:platform="android"    gap:density="hdpi" />
