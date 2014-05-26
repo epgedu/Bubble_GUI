@@ -71,10 +71,11 @@ var auxX;
 
 //var url
 var protocol = "http";
-//var server = "127.0.0.1";
-//var port = "7000";
-var server = "bubble-end.herokuapp.com";
-var port = "80";
+
+//Setting emulator chrome
+var server = "127.0.0.1";
+var port = "7000";
+
 var nameResourceSearch = "/bubble-search";
 var url;
 
@@ -196,7 +197,20 @@ var app = {
 	        document.addEventListener("online", app.handleConnection, false);
 	    	document.addEventListener("offline", app.handleConnection, false);
 	    	
-	    	//get the url 
+	    	
+	    	
+	    	//get the url depending on the device
+	    	//If we are executing on goggle chrome, this event "OnDeviceReady" will never be executed, so to connect to localhost 127.0.0.1 where is deployed the local back-end we use the default connection parameters (127.0.0.1:7000)
+	    	if(device.platform == "Android" && device.model == "sdk") {
+	    		//we are executing on andorid emulator. So to connect to local back-end we have to connect to IP: 10.0.2.2 (look documentation about android emulator)
+	    		server = "10.0.2.2";
+	    		port = "7000";
+	    	}
+	    	else {
+	    		//Rest of options (from blackberry emulator or real devices to connect with the public access back-end on heroku server )
+	    		server = "bubble-end.herokuapp.com";
+	    		port = "80";
+	    	}
 	    	url = protocol+"://"+server+":"+port;
 	    	console.log("setting url backend: "+url);
 	    }

@@ -22,6 +22,8 @@ var notRelatedDescriptors = [];
 var positionRootNode = 0;
 //total number of results
 var totalResults = 0;
+//id root node
+var idRootFormalConcept;
 
 //array to keep the last 10 search 
 var historySearch = [];
@@ -93,7 +95,7 @@ function savedResponse(jsonResponse) {
 		
 		if(JsonLattice.contentObjects.length == 0) {
 			console.log("Error, response empty");
-			app.infoMsgExit(null, "No results...");
+			app.infoMsgExit(null, "Sorry, no results...");
 		}
 		else {
 			//total results
@@ -102,9 +104,10 @@ function savedResponse(jsonResponse) {
 			
 			//get the position for root node. Normally it will be the fist formal concept, but to be sure we get it.
 			positionRootNode = getPosRootNode();
+			idRootFormalConcept = JsonLattice.contentObjects[positionRootNode].conceptId;
 			
 			//add the inital search in history
-			savedHistory(JsonLattice.contentObjects[positionRootNode].conceptId);
+			savedHistory(idRootFormalConcept);
 			
 			//get NTop group to get the not related nodes. Just once, due to this group NTop is always the same until the user make another search
 			getNTop(positionRootNode);
@@ -141,7 +144,6 @@ function mapDataGui(positionFormalConcept) {
 	
 	//get subcategories. It is the group of attributes among all children (union of every intension) minus the attributes from selected formal concept. It means that the subcategories are made from the intensions of all childrens, except
 	//the inherited attributes from selected formal concept. 
-	
 	//first step, to create the group with every children's intension.
 	subCategoriesDescriptors = [];//init array
 	var formalConceptChildren;
@@ -153,13 +155,14 @@ function mapDataGui(positionFormalConcept) {
 			for(var j = 0; j < formalConceptChildren.intension.length; j++) {
 				//check the attribute is not inherited  
 				var attributeInherited = false;
-				for(var k = 0; k < formalConcept.intension.length; k++) {
+				for(var k = 0; k < formalConcept.intension.length && attributeInherited == false; k++) {
 					if(formalConcept.intension[k].id == formalConceptChildren.intension[j].id){
 						attributeInherited = true;
 					}
 				}
 				if(!attributeInherited) {
 					//add attribute
+					
 					subCategoriesDescriptors.push(formalConceptChildren.intension[j]);
 				}
 			}
@@ -170,33 +173,35 @@ function mapDataGui(positionFormalConcept) {
 		console.log(subCategoriesDescriptors[i]);
 	}
 	
-	//get the attributes to go up through lattice (intensionDescriptors). The group is made from the parent's intension attributes.
-	//Could be that some attributes are inherited from more than one parent, then we just include that attribute once and to disable it
-	// in order of the user cannot push it. 
+	//get the attributes to go up through lattice (intensionDescriptors).  
 	intensionDescriptors = []; //init array
 	var formalConceptParent;
 	if(formalConcept != undefined) {
-		for(var i = 0; i < formalConcept.parentsFormalConceptId.length; i++) {
-			//look for the parents
-			formalConceptParent = JsonLattice.contentObjects[ findFormalConcept( formalConcept.parentsFormalConceptId[i] )   ];
-			//add the intension if this attribute is not already in the group (no repeat)
-			for(var j = 0; j < formalConceptParent.intension.length; j++) {
-				//check the attribute is not repeat  
-				var attributeIn = false;
-				for(var k = 0; k < intensionDescriptors.length && attributeIn == false; k++) {
-					if(intensionDescriptors[k].id == formalConceptParent.intension[j].id){
-						//the attribute is already in the array
-						intensionDescriptors[k].inherited = true;
-						attributeIn = true;
-					}
+		//if the formal concept is the root node, then the user cannot go up because it is on the top level
+		if(formalConcept.conceptId == idRootFormalConcept){
+			var linkToRoot = new Object();
+			linkToRoot.id = "top"; //id to jump to root node
+			intensionDescriptors.push(linkToRoot);
+			intensionDescriptors[intensionDescriptors.length - 1].inherited = true;
+			
+		}else if (formalConcept.parentsFormalConceptId.length == 1 && formalConcept.parentsFormalConceptId[0] == idRootFormalConcept) {
+			//if the user is at children of the root node, then just there is one way to go up, it is jumping to root node. (because the root node has not got intension)
+			var linkToRoot = new Object();
+			linkToRoot.id = "jumpToTop"; //id to jump to root node
+			intensionDescriptors.push(linkToRoot);
+			intensionDescriptors[intensionDescriptors.length - 1].inherited = true;
+		}
+		else {
+			//The group is is the same than the intension of the current formal concept, but removing the attributes are not inherited.
+			for(var i = 0; i < formalConcept.intension.length; i++) {
+				intensionDescriptors.push(formalConcept.intension[i]);
+				if(isInherited(formalConcept, formalConcept.intension[i].id)) {
+					intensionDescriptors[intensionDescriptors.length - 1].inherited = true;	
 				}
-				if(!attributeIn) {
-					//add attribute
-					formalConceptParent.intension[j].inherited = false;
-					intensionDescriptors.push(formalConceptParent.intension[j]);
+				else {
+					intensionDescriptors[intensionDescriptors.length - 1].inherited = false;
 				}
 			}
-			
 		}
 	}
 	console.log("Attributes Intension: ");
@@ -207,24 +212,35 @@ function mapDataGui(positionFormalConcept) {
 	notRelatedDescriptors = []; //init array
 	//get the attributes to represent the options to go toward not related nodes on the lattice. For that, we need remove from ntop group the attributes which makes the intension for selected node.
 	//the ntop group always is the same until the user do a new search. Therefore, we get ntop group on the beginning when we receive the json object
-	//first step is fill the not related vector whit ntop group
-	for ( var i = 0; i < nTop.length;  i++ ) {
-		notRelatedDescriptors[i] = nTop[i];
-	}
-	//for each attribute (intension) in the current formal concept, chek if this is in ntop
 	if(formalConcept != undefined) {
-		for(var i = 0; i < formalConcept.intension.length; i++) {
-			//check if the attribute is in nTop
-			var posInNtop = isInNtop(formalConcept.intension[i].id);
-			if (posInNtop > -1) {
-				//if it is in ntop, then we need to remove it from not related group
-				removeNotRelated(formalConcept.intension[i].id);
+		//checking if the selected formal concept is the root node then we don't build the not related group. If we build this group, his content will be the same than subcategories group and this doesn't make sense
+		if(formalConcept.conceptId != idRootFormalConcept ) {
+			//first step is fill the not related vector whit ntop group
+			for ( var i = 0; i < nTop.length;  i++ ) {
+				notRelatedDescriptors[i] = nTop[i];
+			}
+			//for each attribute (intension) in the current formal concept, chek if this is in ntop
+			for(var i = 0; i < formalConcept.intension.length; i++) {
+				//check if the attribute is in nTop
+				var posInNtop = isInNtop(formalConcept.intension[i].id);
+				if (posInNtop > -1) {
+					//if it is in ntop, then we need to remove it from not related group
+					removeNotRelated(formalConcept.intension[i].id);
+				}
 			}
 		}
 	}
 	console.log("Not related: ");
 	for(var i = 0; i < notRelatedDescriptors.length; i++) {
 		console.log(notRelatedDescriptors[i]);
+	}
+	
+	//checking if we are at leaf node (not documents, not subcategories, not related). In this case, we cannot go ahead because it is the end of the way. We need to go back toward root node
+	if (formalConcept != undefined) {
+		if (formalConcept.extension.length == 0 && subCategoriesDescriptors.length == 0 && notRelatedDescriptors.length == 0) {
+				app.info(null, "End of the road!!!. We cannot go ahead because there are not more subcategories or not related ways. We need to go back toward the start");
+				console.log("Info: We are on a leaf node");
+		}
 	}
 	
 }
@@ -234,22 +250,33 @@ function mapDataGui(positionFormalConcept) {
  * @param idSelectedDescriptor
  */
 function getParentsWithDescriptor(idSelectedDescriptor) {
-	//to look for in every parent
-	var formalConceptParent;
-	if(formalConcept != undefined) {
-		for(var i = 0; i < formalConcept.parentsFormalConceptId.length; i++) {
-			//get the formal concept parent
-			formalConceptParent = JsonLattice.contentObjects[ findFormalConcept( formalConcept.parentsFormalConceptId[i] )   ];
-			//look for the attribute 
-			for(var j = 0; j < formalConceptParent.intension.length; j++) {
-				//check if the attribute is  
-				if(formalConceptParent.intension[j].id == idSelectedDescriptor) {
-					//parent found
-					idFormalConceptSelected = formalConceptParent.conceptId;
-					console.log("new formal concept: "+idFormalConceptSelected);
-					//add the new search to the history
-					savedHistory(idFormalConceptSelected);
-					return null;
+	
+	//if idSelectedDescriptor is "root" we are forcing to jump to root node
+	if(idSelectedDescriptor == "jumpToTop") {
+		idFormalConceptSelected = idRootFormalConcept;
+		console.log("jumping to root node: "+idRootFormalConcept);
+		//add the new search to the history
+		savedHistory(idRootFormalConcept);
+		return null;
+	}
+	else {
+		//to look for in every parent
+		var formalConceptParent;
+		if(formalConcept != undefined) {
+			for(var i = 0; i < formalConcept.parentsFormalConceptId.length; i++) {
+				//get the formal concept parent
+				formalConceptParent = JsonLattice.contentObjects[ findFormalConcept( formalConcept.parentsFormalConceptId[i] )   ];
+				//look for the attribute 
+				for(var j = 0; j < formalConceptParent.intension.length; j++) {
+					//check if the attribute is  
+					if(formalConceptParent.intension[j].id == idSelectedDescriptor) {
+						//parent found
+						idFormalConceptSelected = formalConceptParent.conceptId;
+						console.log("new formal concept: "+idFormalConceptSelected);
+						//add the new search to the history
+						savedHistory(idFormalConceptSelected);
+						return null;
+					}
 				}
 			}
 		}
@@ -345,7 +372,7 @@ function getNTop(rootPositionNode) {
 			for(var j = 0; j < childrenRootFormalconcept.intension.length; j++) {
 				//check the attribute is not inherited from root node  
 				var attributeInherited = false;
-				for(var k = 0; k < formalConceptRoot.intension.length; k++) {
+				for(var k = 0; k < formalConceptRoot.intension.length && attributeInherited == false; k++) {
 					if(formalConceptRoot.intension[k].id == childrenRootFormalconcept.intension[j].id){
 						attributeInherited = true;
 					}
@@ -413,4 +440,27 @@ function removeNotRelated(idAttribute) {
 		}
 
 	}
+}
+
+/**
+ * Checking if the attribute (idIntension) is in a parent of selected formal concept (formalConcept) 
+ * @param formalConcept
+ * @param idIntension
+ * @returns {Boolean}
+ */
+function isInherited(formalConcept, idIntension) {
+	
+	var formalConceptParent;
+	for(var i=0; i<formalConcept.parentsFormalConceptId.length; i++) {
+		formalConceptParent = JsonLattice.contentObjects[ findFormalConcept( formalConcept.parentsFormalConceptId[i] )   ];
+		//look for the attribute 
+		for(var j = 0; j < formalConceptParent.intension.length; j++) {
+			//check if the attribute is  
+			if(formalConceptParent.intension[j].id == idIntension) {
+				return true;
+			}
+	
+		}
+	}
+	return false;
 }

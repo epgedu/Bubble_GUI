@@ -20,7 +20,7 @@ describe("Processing lattice information", function() {
 	    }
 	    catch(e) {
 	    	if(e.message == "Cannot read property 'alert' of undefined") {
-	    		//it is expected, because of the exception is thrown due to all DOM object are not loaded during the test
+	    		//it is expected, because of the exception is thrown due to all DOM objects are not loaded during the test
 	    		//check if the subcategories, intension and not related arrays have the expected content
 	    		//expected new subcategories
 	    		expect(subCategoriesDescriptors[0].id).toBe("d4");
@@ -30,14 +30,9 @@ describe("Processing lattice information", function() {
 	    		expect(subCategoriesDescriptors[4].id).toBe("d8");
 	    		expect(subCategoriesDescriptors[5].id).toBe("d9");
 	    	    //expected new intension
-	    		expect(intensionDescriptors.length).toBe(0);
-	    	    //expected new not related
-	    		expect(notRelatedDescriptors[0].id).toBe("d4");
-	    		expect(notRelatedDescriptors[1].id).toBe("d1");
-	    		expect(notRelatedDescriptors[2].id).toBe("d3");
-	    		expect(notRelatedDescriptors[3].id).toBe("d5");
-	    		expect(notRelatedDescriptors[4].id).toBe("d8");
-	    		expect(notRelatedDescriptors[5].id).toBe("d9");
+	    		expect(intensionDescriptors[0].id).toBe("top");
+	    	    //expected new not related, none
+	    		expect(notRelatedDescriptors.length).toBe(0);
 	    	}
 	    }
 	});
@@ -51,12 +46,20 @@ describe("Processing lattice information", function() {
 		//expected new subcategories
 		expect(subCategoriesDescriptors.length).toBe(0);
 		//expected new intension
-		expect(intensionDescriptors[0].id).toBe("d7");
-		expect(intensionDescriptors[0].inherited).toBe(true);
-		expect(intensionDescriptors[1].id).toBe("d10");
-		expect(intensionDescriptors[1].inherited).toBe(true);
-		expect(intensionDescriptors[2].id).toBe("d4");
+		expect(intensionDescriptors[0].id).toBe("d1");
+		expect(intensionDescriptors[0].inherited).toBe(false);
+		expect(intensionDescriptors[1].id).toBe("d3");
+		expect(intensionDescriptors[1].inherited).toBe(false);
+		expect(intensionDescriptors[2].id).toBe("d5");
 		expect(intensionDescriptors[2].inherited).toBe(false);
+		expect(intensionDescriptors[3].id).toBe("d7");
+		expect(intensionDescriptors[3].inherited).toBe(true);
+		expect(intensionDescriptors[4].id).toBe("d8");
+		expect(intensionDescriptors[4].inherited).toBe(false);
+		expect(intensionDescriptors[5].id).toBe("d9");
+		expect(intensionDescriptors[5].inherited).toBe(false);
+		expect(intensionDescriptors[6].id).toBe("d10");
+		expect(intensionDescriptors[6].inherited).toBe(true);
 		//expected new not related
 		expect(notRelatedDescriptors[0].id).toBe("d4");
 	});
@@ -74,8 +77,7 @@ describe("Processing lattice information", function() {
 		expect(subCategoriesDescriptors[0].id).toBe("d8");
 		expect(subCategoriesDescriptors[1].id).toBe("d9");
 	    //expected new intension
-		expect(intensionDescriptors[0].id).toBe("d7");
-		expect(intensionDescriptors[1].id).toBe("d10");
+		expect(intensionDescriptors[0].id).toBe("jumpToTop");
 		//expected new not related
 		expect(notRelatedDescriptors[0].id).toBe("d1");
 		expect(notRelatedDescriptors[1].id).toBe("d3");
@@ -94,12 +96,20 @@ describe("Processing lattice information", function() {
 	    //expected new subcategories
 		expect(subCategoriesDescriptors.length).toBe(0);
 		//expected new intension
-		expect(intensionDescriptors[0].id).toBe("d7");
-		expect(intensionDescriptors[0].inherited).toBe(true);
-		expect(intensionDescriptors[1].id).toBe("d10");
-		expect(intensionDescriptors[1].inherited).toBe(true);
-		expect(intensionDescriptors[2].id).toBe("d4");
+		expect(intensionDescriptors[0].id).toBe("d1");
+		expect(intensionDescriptors[0].inherited).toBe(false);
+		expect(intensionDescriptors[1].id).toBe("d3");
+		expect(intensionDescriptors[1].inherited).toBe(false);
+		expect(intensionDescriptors[2].id).toBe("d5");
 		expect(intensionDescriptors[2].inherited).toBe(false);
+		expect(intensionDescriptors[3].id).toBe("d7");
+		expect(intensionDescriptors[3].inherited).toBe(true);
+		expect(intensionDescriptors[4].id).toBe("d8");
+		expect(intensionDescriptors[4].inherited).toBe(false);
+		expect(intensionDescriptors[5].id).toBe("d9");
+		expect(intensionDescriptors[5].inherited).toBe(false);
+		expect(intensionDescriptors[6].id).toBe("d10");
+		expect(intensionDescriptors[6].inherited).toBe(true);
 		//expected new not related
 		expect(notRelatedDescriptors[0].id).toBe("d4"); 
 	});

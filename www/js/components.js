@@ -298,9 +298,18 @@ function buildIntension() {
 			if (i % 3 == 2) {left = '55%';}
 			var bubbleLink = document.createElement('li');
 			
-			initType = (intensionDescriptors[i].value).indexOf(TAG_TYPE);
-			nameAttribute = (intensionDescriptors[i].value).substring(0, initType -1);
-			typeAttribute = (intensionDescriptors[i].value).substring(initType + TAG_TYPE.length, intensionDescriptors[i].value.length);
+			if(intensionDescriptors[i].id == "top" ) {
+				nameAttribute = "You are already on the top!"
+				typeAttribute = "";
+			} else if(intensionDescriptors[i].id == "jumpToTop" ) {
+				nameAttribute = "Would you like to jump to the top?"
+				typeAttribute = "";
+			}
+			else {
+				initType = (intensionDescriptors[i].value).indexOf(TAG_TYPE);
+				nameAttribute = (intensionDescriptors[i].value).substring(0, initType -1);
+				typeAttribute = (intensionDescriptors[i].value).substring(initType + TAG_TYPE.length, intensionDescriptors[i].value.length);	
+			}
 			
 			//setting id element "li" with the id descriptor. That way, when the user ckick on the bubble, we can know the selected descriptor during the event
 			bubbleLink.id = intensionDescriptors[i].id;
@@ -308,8 +317,8 @@ function buildIntension() {
 			bubbleLink.innerHTML = "<br><br><br> "+nameAttribute+"<br>";
 			bubbleLink.innerHTML += "<i>"+typeAttribute+"</i>"
 			
-			//if the attribute is inherited then it cannot be pushed in order to ascendent through lattice 
-			if(intensionDescriptors[i].inherited == false) { 
+			//if the attribute is not inherited then it cannot be pushed in order to ascendent through lattice 
+			if(intensionDescriptors[i].inherited == true) { 
 				bubbleLink.className = 'li_bubble';
 				bubbleLink.style.background = getRandomColour();
 				
@@ -319,16 +328,16 @@ function buildIntension() {
 			
 				bubbleLink.addEventListener('touchend', function(event) {
 					event.stopPropagation();
-					if(auxX == event.changedTouches[0].pageX) { //if not moving
+					if(auxX == event.changedTouches[0].pageX && event.currentTarget.id != "top") { //if not moving
 						console.log("refreshing from intension bubble...");
-						selectBubbleIntension(event.target.id); 
+						selectBubbleIntension(event.currentTarget.id); 
 					}
 				}, false);
 			}
 			else {
-				bubbleLink.className = 'li_bubble_inherited';
+				bubbleLink.className = 'li_bubble_own';
 				
-				bubbleLink.innerHTML += "<br><b>{Attribute inherited}<b>";
+				bubbleLink.innerHTML += "<br><b>{attribute of the current bubble}<b>";
 			}
 			intensionBubble.appendChild(bubbleLink);
 		}
@@ -400,7 +409,7 @@ function buildSubcategories() {
 				event.stopPropagation();
 				if(auxX == event.changedTouches[0].pageX) { //if not moving
 					console.log("refreshing from subcategories bubble...");
-					selectBubbleSubcategories(event.target.id); 
+					selectBubbleSubcategories(event.currentTarget.id); 
 				}
 			}, false);
 			
@@ -473,7 +482,7 @@ function buildNotRelated() {
 				event.stopPropagation();
 				if(auxX == event.changedTouches[0].pageX) { //if not moving
 					console.log("refreshing from not related bubble...");
-					selectBubbleNotRelated(event.target.id); 
+					selectBubbleNotRelated(event.currentTarget.id); 
 				}
 			}, false);
 			
