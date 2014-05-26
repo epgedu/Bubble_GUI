@@ -102,8 +102,18 @@ function handleStateChange() {
 	    		// Throw an error if the request was not 200 OK 
 	    	    if (req.status != 200) {
 	    	    	
-	    	    	console.log("Error, status request "+ req.status +":"+req.responseText);
-	    	    	app.error(null, "Error, status request "+ req.status +":"+req.responseText+" Please contact the app administrator.");
+	    	    	if(req.status == 403) {
+	    	    		
+	    	    		console.log("Error, status request "+ req.status +":"+req.responseText);
+		    	    	app.infoMsgExit(null, "Sorry, there are not google credits left. Please, try again later.");
+		    	    	
+	    	    	}
+	    	    	else {
+	    	    		
+	    	    		console.log("Error, status request "+ req.status +":"+req.responseText);
+	    	    		app.error(null, "Error, status request "+ req.status +":"+req.responseText+" Please contact the app administrator.");
+	    	    
+	    	    	}
 	    	    	
 	    	    }
 	    	    else {
