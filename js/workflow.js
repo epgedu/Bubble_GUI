@@ -55,6 +55,17 @@ function cleanResultDiv() {
 	while ( resultsDiv.firstChild ) resultsDiv.removeChild( resultsDiv.firstChild );
 }
 
+//shows the load page div on screen
+function showLoadPage () {
+	loadpageDiv.className = 'page transition center';
+}
+
+//hides load page div 
+function hideLoadPage() {
+	loadpageDiv.className = 'page transition up';
+}
+
+
 //to open menu div
 function openMenu() {
 	try {
@@ -100,7 +111,8 @@ function pushSearch() {
 		if (validateSearch()) {
 			//hide the search bar
 			hideSearchBar();
-			sendRequest(searchtxt.value);
+			showLoadPage();
+			sendRequest(searchtxt.value, languageSearchChecked);
 		}
 		else {
 			//it not an exception, that's why the first parameter is null
@@ -108,6 +120,7 @@ function pushSearch() {
 		}
 	}
 	catch(e) {
+		hideLoadPage();
 		app.error(e, "Fatal error searching... Please contanct the site administrator.");
 	}
 }
@@ -115,14 +128,24 @@ function pushSearch() {
 //search text field cannot be empty
 function validateSearch() {
 	console.log("text search filter: "+searchtxt.value)
-	if (searchtxt.value == '') return false
-	return true;
-	
+	if (searchtxt.value == '') {
+		return false;
+	}
+	else {
+		for (i=0;i<languageSearch.length;i++){ 
+			if (languageSearch[i].checked) {
+				languageSearchChecked = languageSearch[i].value;
+				break;
+			}
+		} 
+		return true;
+	}
 }
 
 //thrown actions after to get a response from backend
 function proSeach() {
 	try {
+		hideLoadPage();
 		buildListDocBubble();
 		drawListDocBubble();
 		buildLinksBar(true);
@@ -131,6 +154,7 @@ function proSeach() {
 		buildSubcategoriasIntension();
 	}
 	catch(e) {
+		hideLoadPage();
 		app.error(e, "Fatal on pro-search process... Please contanct the site administrator.");
 	}
 }
@@ -258,7 +282,8 @@ function goInit() {
 		//remove all divs from results div parent
 		cleanResultDiv();
 		//remove the filter search
-		document.getElementById("searchtxt").value = "";
+		searchtxt.value = "";
+		languageSearch[0].checked = true;
 		showSearchBar();
 	}
 	catch (e) {

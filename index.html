@@ -37,7 +37,7 @@
 			    <div id="tab-1">
 			        <a href="#tab-1" class="tab">About</a>
 			        <div class="content">
-			            Bubble  Search V 1.2.2
+			            Bubble  Search V 1.2.3
 			        </div>
 			    </div>
 			    <div id="tab-2">
@@ -54,33 +54,44 @@
 			    <div id="tab-4">
 			        <a href="#tab-4" class="tab">Options</a>
 			        <div class="content">
-			            Building...
+			            Engine Search (building...): 
+						<select>
+							<option value="google">Google</option>
+							<option value="yahoo">Yahoo</option>
+							<option value="twitter">Twitter</option>
+						</select>
 			        </div>
 			    </div>
 			</div>
         </div>
         
 		<div id="app_div" class="cse-branding-bottom" style="background-color:#FFFFFF;color:#000000">
-		  <div id="searchbar_div" class="cse-branding-form" style="padding-top:30%">
-			<form action="" id="boxtext">
-			  <div>
-				<input type="hidden" name="cx" value="000888210889775888983:3gepro1fol8" />
-				<input type="hidden" name="ie" value="UTF-8" />
-				<input type="text" name="q" id="searchtxt" size="31" />
-				<input type="button" id="searchbtn" onclick="javascript:pushSearch()">
-			  </div>
-			</form>
-		    <div class="cse-branding-logo">
-				<img src="img/google.gif" alt="Google" />
+			<div id="searchbar_div" class="cse-branding-form" style="padding-top:30%">
+				<form action="" id="boxtext">
+				  <div>
+					<input type="hidden" name="cx" value="000888210889775888983:3gepro1fol8" />
+					<input type="hidden" name="ie" value="UTF-8" />
+					<input type="text" name="q" id="searchtxt" size="31" />
+					<input type="button" id="searchbtn" onclick="javascript:pushSearch()">
+				  </div>
+				  <div>
+					<input type="radio" name="languageSearch" value="spa" checked="checked">Spanish
+					<input type="radio" name="languageSearch" value="eng">English
+				  </div>
+				</form>
+				<div class="cse-branding-logo" style="padding-top:20px">
+					<img src="img/google.gif" alt="Google" />
+				</div>
+				<div class="cse-branding-text">
+					Custom Search
+				</div>
 			</div>
-			<div class="cse-branding-text">
-				Custom Search
-			</div>
-		  </div>
 		  <div id="results_div"></div>
           <div id="linksbar_div"></div>
 		</div>
-		
+		<div id="loadpage_div" style=""> 
+			<img style="height:100%" src="./img/spinner.gif">
+		</div>
         
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

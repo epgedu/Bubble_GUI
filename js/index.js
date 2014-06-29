@@ -40,7 +40,8 @@ msgError,
 initError,
 subcategoriesBubble,
 intensionBubble,
-notRelatedBubble; 
+notRelatedBubble,
+loadpageDiv; 
 
 //scroll on result_div
 var scrollResult;
@@ -53,13 +54,16 @@ menuDiv = document.getElementById("menu_div");
 linksbarDiv = document.getElementById("linksbar_div");
 searchBtn = document.getElementById("searchbtn");
 searchtxt = document.getElementById("searchtxt");
+languageSearch = document.getElementsByName("languageSearch");
+loadpageDiv = document.getElementById("loadpage_div");
 
 //global variables (load control). The component are built once, the first load of application
 var isBuiltListDocsBubble,
 isBuiltIntensionBubble,
 isBuiltSubcategoriesBubble,
 isBuiltErrorBubble,
-isBuiltNotRelatedBubble = false;
+isBuiltNotRelatedBubble = false,
+languageSearchChecked;
 
 //var to save the position and state of event and to handle the swipe event
 var down_x = null;
@@ -92,7 +96,8 @@ var app = {
         menuDiv.className = 'page center';
         resultsDiv.className = 'results right';
         linksbarDiv.className = 'page down';
-        
+        loadpageDiv.className = 'page up';
+		
         this.bindEvents();
     },
     

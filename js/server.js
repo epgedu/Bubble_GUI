@@ -5,7 +5,7 @@
 
 var req; // global variable to hold request object
 
-function sendRequest(filterText) {  
+function sendRequest(filterText, languageSearch) {  
 	
 	try {
 		
@@ -60,7 +60,7 @@ function sendRequest(filterText) {
 			
 			req.onreadystatechange = handleStateChange;
 			req.open("POST", urlRequest, true);
-			req.send("text-filter="+filterText);
+			req.send("text-filter="+filterText+"&language-search="+languageSearch);
 		
 		}
 		else {
